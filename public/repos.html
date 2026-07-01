@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>clear-github-users</title>
+    <title>clear-github-users · repos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,24 +16,20 @@
     <header class="topbar">
       <div class="brand"><b>clear</b>-github-users</div>
       <nav class="nav">
-        <a class="nav-link active" href="/">Followers</a>
-        <a class="nav-link" href="/repos.html">Repos</a>
+        <a class="nav-link" href="/">Followers</a>
+        <a class="nav-link active" href="/repos.html">Repos</a>
       </nav>
       <a id="me" class="me" target="_blank" rel="noopener" hidden></a>
       <button id="refresh" class="ghost" title="Reload">↻</button>
     </header>
 
-    <nav class="tabs" id="tabs" hidden>
-      <button class="tab active" data-kind="notFollowingBack">
-        Not following back <span class="count">–</span>
-      </button>
-      <button class="tab" data-kind="fans">
-        Fans <span class="count">–</span>
-      </button>
-      <button class="tab" data-kind="mutuals">
-        Mutuals <span class="count">–</span>
-      </button>
-    </nav>
+    <div class="repobar" id="repobar" hidden>
+      <input id="filter" class="filter" type="search" placeholder="Filter repos…" />
+      <span class="counts">
+        <span class="dot pub"></span><b id="pubCount">0</b> public
+        <span class="dot priv"></span><b id="privCount">0</b> private
+      </span>
+    </div>
 
     <main id="stage">
       <div class="state" id="state">Loading…</div>
@@ -42,6 +38,6 @@
 
     <div class="toast" id="toast" hidden></div>
 
-    <script src="/app.js" type="module"></script>
+    <script src="/repos-app.js" type="module"></script>
   </body>
 </html>

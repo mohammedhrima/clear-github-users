@@ -33,4 +33,15 @@ router.delete("/following/:login", wrap(async (req, res) => {
   res.json({ ok: true });
 }));
 
+router.get("/repos", wrap(async (_req, res) => res.json(await gh.getRepos())));
+
+router.patch("/repos/:owner/:repo", wrap(async (req, res) => {
+  const updated = await gh.setRepoVisibility(
+    req.params.owner,
+    req.params.repo,
+    Boolean(req.body.private),
+  );
+  res.json(updated);
+}));
+
 module.exports = router;

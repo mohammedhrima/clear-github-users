@@ -45,6 +45,31 @@ const spec = {
         responses: ok,
       },
     },
+    "/api/repos": {
+      get: { summary: "Repos you own (name, owner, visibility, url)", responses: ok },
+    },
+    "/api/repos/{owner}/{repo}": {
+      patch: {
+        summary: "Set a repo public/private (needs the repo scope)",
+        parameters: [
+          { name: "owner", in: "path", required: true, schema: { type: "string" } },
+          { name: "repo", in: "path", required: true, schema: { type: "string" } },
+        ],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: { private: { type: "boolean" } },
+                required: ["private"],
+              },
+            },
+          },
+        },
+        responses: ok,
+      },
+    },
   },
 };
 

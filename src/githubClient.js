@@ -47,16 +47,19 @@ async function request(config) {
   }
 }
 
-async function getAll(path) {
-  let users = [];
+async function getAll(path, extraParams = {}) {
+  let items = [];
   let page = 1;
   for (;;) {
-    const res = await request({ url: path, params: { per_page: 100, page } });
-    users = users.concat(res.data);
+    const res = await request({
+      url: path,
+      params: { per_page: 100, page, ...extraParams },
+    });
+    items = items.concat(res.data);
     if ((res.headers.link || "").includes('rel="next"')) page += 1;
     else break;
   }
-  return users;
+  return items;
 }
 
 const slim = (u) => ({
@@ -107,6 +110,49 @@ function asScopeError(e) {
   return e;
 }
 
+const slimRepo = (r) => ({
+  name: r.name,
+  fullName: r.full_name,
+  owner: r.owner.login,
+  htmlUrl: r.html_url,
+  description: r.description ?? null,
+  private: r.private,
+  fork: r.fork,
+  stars: r.stargazers_count,
+  language: r.language ?? null,
+  updatedAt: r.updated_at,
+});
+
+async function getRepos() {
+  const repos = await getAll("/user/repos", { affiliation: "owner", sort: "updated" });
+  return repos.map(slimRepo);
+}
+
+function asRepoScopeError(e) {
+  const status = e.response && e.response.status;
+  if (status === 403 || status === 404) {
+    return withMeta(
+      new Error("This action needs the repo scope."),
+      status,
+      "gh auth refresh -s repo",
+    );
+  }
+  return e;
+}
+
+async function setRepoVisibility(owner, repo, makePrivate) {
+  try {
+    const { data } = await request({
+      method: "patch",
+      url: `/repos/${owner}/${repo}`,
+      data: { private: makePrivate },
+    });
+    return slimRepo(data);
+  } catch (e) {
+    throw asRepoScopeError(e);
+  }
+}
+
 async function follow(login) {
   try {
     await request({ method: "put", url: `/user/following/${login}` });
@@ -123,4 +169,12 @@ async function unfollow(login) {
   }
 }
 
-module.exports = { getViewer, getRelationships, getUser, follow, unfollow };
+module.exports = {
+  getViewer,
+  getRelationships,
+  getUser,
+  follow,
+  unfollow,
+  getRepos,
+  setRepoVisibility,
+};
