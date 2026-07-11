@@ -11,10 +11,10 @@ const ok = { 200: { description: "OK" } };
 const spec = {
   openapi: "3.0.0",
   info: {
-    title: "clear-github-users API",
+    title: "github-management API",
     version: "1.0.0",
     description:
-      "Find who you follow that doesn't follow you back (and vice versa), and follow/unfollow. Auth comes from the local GitHub CLI (gh auth token).",
+      "Manage your GitHub follow relationships (follow/unfollow) and repository visibility. Auth comes from the local GitHub CLI (gh auth token).",
   },
   paths: {
     "/api/me": {

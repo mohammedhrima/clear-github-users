@@ -1,7 +1,7 @@
 {
-  "name": "clear-github-users",
+  "name": "github-management",
   "version": "1.0.0",
-  "description": "Find who you follow on GitHub that doesn't follow you back (and vice versa), with a visual UI to unfollow. Auth via the local GitHub CLI.",
+  "description": "Manage your GitHub account from a local visual UI — follow relationships (unfollow / follow back) and repository visibility (public ↔ private). Auth via the local GitHub CLI.",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js"

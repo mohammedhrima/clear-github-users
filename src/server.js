@@ -11,5 +11,5 @@ app.use("/docs", swagger.serve, swagger.setup);
 app.use(express.static(path.join(__dirname, "..", "public")));
 
 app.listen(PORT, () => {
-  console.log(`clear-github-users → http://localhost:${PORT}`);
+  console.log(`github-management → http://localhost:${PORT}`);
 });
